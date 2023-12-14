@@ -51,6 +51,7 @@ app.use((0, express_session_1.default)({
     cookie: {
         maxAge: 30000 * 10 * 10,
         sameSite: "lax",
+        httpOnly: false
     },
     rolling: true,
     store: connect_mongo_1.default.create({
