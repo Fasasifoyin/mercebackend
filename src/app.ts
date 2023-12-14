@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://mercebackend.onrender.com"],
+    origin: ["http://localhost:5173", "https://mercefrontend.vercel.app/"],
     credentials: true,
   })
 );
@@ -29,7 +29,6 @@ app.use(
     cookie: {
       maxAge: 30000 * 10 * 10,
       sameSite: "lax",
-      httpOnly: false
     },
     rolling: true,
     store: MongoStore.create({
