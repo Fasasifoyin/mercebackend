@@ -40,7 +40,7 @@ const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173", "https://mercefrontend.vercel.app/"],
+    origin: ["http://localhost:5173", "https://mercefrontend.vercel.app"],
     credentials: true,
 }));
 app.use((0, express_session_1.default)({
@@ -50,7 +50,9 @@ app.use((0, express_session_1.default)({
     saveUninitialized: false,
     cookie: {
         maxAge: 30000 * 10 * 10,
-        sameSite: "lax",
+        secure: true,
+        httpOnly: true,
+        sameSite: "none",
     },
     rolling: true,
     store: connect_mongo_1.default.create({
