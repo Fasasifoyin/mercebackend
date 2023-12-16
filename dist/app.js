@@ -47,7 +47,7 @@ app.use((0, cors_1.default)({
     ],
     credentials: true,
 }));
-if (validateEnv_1.default.NODE_ENV === "production") {
+if (validateEnv_1.default.STATE === "production") {
     app.set("trust proxy", 1);
 }
 app.use((0, express_session_1.default)({
@@ -56,10 +56,10 @@ app.use((0, express_session_1.default)({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: validateEnv_1.default.NODE_ENV === "production",
+        secure: validateEnv_1.default.STATE === "production",
         httpOnly: true,
         maxAge: 30000 * 10 * 10,
-        sameSite: validateEnv_1.default.NODE_ENV === "production" ? "none" : "lax",
+        sameSite: validateEnv_1.default.STATE === "production" ? "none" : "lax",
     },
     rolling: true,
     store: connect_mongo_1.default.create({

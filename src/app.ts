@@ -24,7 +24,7 @@ app.use(
   })
 );
 
-if (ENV.NODE_ENV === "production") {
+if (ENV.STATE === "production") {
   app.set("trust proxy", 1);
 }
 
@@ -35,10 +35,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: ENV.NODE_ENV === "production",
+      secure: ENV.STATE === "production",
       httpOnly: true,
       maxAge: 30000 * 10 * 10,
-      sameSite: ENV.NODE_ENV === "production" ? "none" : "lax",
+      sameSite: ENV.STATE === "production" ? "none" : "lax",
     },
     rolling: true,
     store: MongoStore.create({
