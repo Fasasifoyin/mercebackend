@@ -40,26 +40,32 @@ const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:5173", "https://mercefrontend.vercel.app"],
+    origin: [
+        "http://localhost:5173",
+        "localhost:5173",
+        "https://mercefrontend.vercel.app",
+    ],
     credentials: true,
 }));
+if (validateEnv_1.default.NODE_ENV === "production") {
+    app.set("trust proxy", 1);
+}
 app.use((0, express_session_1.default)({
     name: validateEnv_1.default.COOKIE_NAME,
     secret: validateEnv_1.default.SESSION_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 30000 * 10 * 10,
-        secure: true,
+        secure: validateEnv_1.default.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: "none",
+        maxAge: 30000 * 10 * 10,
+        sameSite: validateEnv_1.default.NODE_ENV === "production" ? "none" : "lax",
     },
     rolling: true,
     store: connect_mongo_1.default.create({
         mongoUrl: validateEnv_1.default.MONGO_URL,
     }),
 }));
-// app.set("trust proxy", 1);
 app.use("/api/general", general_1.default);
 app.use("/api/users", user_1.default);
 app.use("/api/company", company_1.default);

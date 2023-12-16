@@ -15,10 +15,18 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://mercefrontend.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "localhost:5173",
+      "https://mercefrontend.vercel.app",
+    ],
     credentials: true,
   })
 );
+
+if (ENV.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
 
 app.use(
   session({
@@ -27,10 +35,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 30000 * 10 * 10,
-      secure: true,
+      secure: ENV.NODE_ENV === "production",
       httpOnly: true,
-      sameSite: "none",
+      maxAge: 30000 * 10 * 10,
+      sameSite: ENV.NODE_ENV === "production" ? "none" : "lax",
     },
     rolling: true,
     store: MongoStore.create({
@@ -38,7 +46,6 @@ app.use(
     }),
   })
 );
-// app.set("trust proxy", 1);
 
 app.use("/api/general", generalRoute);
 app.use("/api/users", userRoute);
